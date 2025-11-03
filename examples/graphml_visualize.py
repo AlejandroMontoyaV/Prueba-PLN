@@ -253,30 +253,41 @@ def start_server(port):
 # main function
 def visualize_graphml(graphml_file, html_path, port=8000):
     json_data = graphml_to_json(graphml_file)
-    html_dir = os.path.dirname(html_path)
+
+    # 1) Resuelve carpeta destino
+    html_abs = os.path.abspath(html_path)
+    html_dir = os.path.dirname(html_abs) or os.getcwd()   # usa cwd si no hay carpeta
+    html_file = os.path.basename(html_abs)
+
     if not os.path.exists(html_dir):
         os.makedirs(html_dir)
+
+    # 2) Crea archivos
     json_path = os.path.join(html_dir, 'graph_json.js')
     create_json(json_data, json_path)
-    create_html(html_path)
-    # start server in background
-    server_thread = threading.Thread(target=start_server(port))
+    create_html(os.path.join(html_dir, html_file))
+
+    # 3) Sirve esa carpeta y no todo el cwd
+    os.chdir(html_dir)
+
+    # 4) ¡OJO! target y args correctos
+    server_thread = threading.Thread(target=start_server, args=(port,))
     server_thread.daemon = True
     server_thread.start()
-    
-    # open default browser
-    webbrowser.open(f'http://localhost:{port}/{html_path}')
-    
+
+    # 5) Abre el HTML servido por el handler (desde html_dir)
+    webbrowser.open(f'http://localhost:{port}/{html_file}')
+
     print("Visualization is ready. Press Ctrl+C to exit.")
     try:
-        # keep main thread running
         while True:
             pass
     except KeyboardInterrupt:
         print("Shutting down...")
 
+
 # usage
 if __name__ == "__main__":
-    graphml_file = r"nano_graphrag_cache_azure_openai_TEST\graph_chunk_entity_relation.graphml"  # replace with your GraphML file path
+    graphml_file = r"nano_graphrag_cache_deepseek_TEST\graph_chunk_entity_relation.graphml"  # replace with your GraphML file path
     html_path = "graph_visualization.html"
     visualize_graphml(graphml_file, html_path, 11236)

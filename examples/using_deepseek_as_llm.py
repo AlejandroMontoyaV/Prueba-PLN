@@ -1,4 +1,5 @@
 import os
+from dotenv import load_dotenv
 import logging
 from openai import AsyncOpenAI
 from nano_graphrag import GraphRAG, QueryParam
@@ -9,9 +10,23 @@ from nano_graphrag._utils import compute_args_hash
 logging.basicConfig(level=logging.WARNING)
 logging.getLogger("nano-graphrag").setLevel(logging.INFO)
 
-DEEPSEEK_API_KEY = "sk-XXXX"
+load_dotenv()
+# DEEPSEEK_API_KEY=sk-xxxxxxxxxxxxxxxxxxxxx
+DEEPSEEK_API_KEY = os.getenv("DEEPSEEK_API_KEY")
 MODEL = "deepseek-chat"
 
+# NUEVO: embeddings locales con sentence-transformers
+import numpy as np
+from sentence_transformers import SentenceTransformer
+from nano_graphrag._utils import wrap_embedding_func_with_attrs
+
+_st_model = SentenceTransformer("all-MiniLM-L6-v2")  # 384 dims, rápido
+
+@wrap_embedding_func_with_attrs(embedding_dim=384, max_token_size=8192)
+async def local_st_embeddings(texts: list[str]) -> np.ndarray:
+    # normalize_embeddings=True mejora la búsqueda
+    embs = _st_model.encode(texts, normalize_embeddings=True, convert_to_numpy=True)
+    return np.array(embs)
 
 async def deepseepk_model_if_cache(
     prompt, system_prompt=None, history_messages=[], **kwargs
@@ -60,10 +75,13 @@ def query():
         working_dir=WORKING_DIR,
         best_model_func=deepseepk_model_if_cache,
         cheap_model_func=deepseepk_model_if_cache,
+        embedding_func=local_st_embeddings,
+        enable_naive_rag=True,
+        enable_llm_cache=False
     )
     print(
         rag.query(
-            "What are the top themes in this story?", param=QueryParam(mode="global")
+            "Why does Scrooge fear the Ghost of Christmas Yet to Come more than the other spirits?", param=QueryParam(mode="global") # naive, local, global
         )
     )
 
@@ -82,9 +100,11 @@ def insert():
 
     rag = GraphRAG(
         working_dir=WORKING_DIR,
-        enable_llm_cache=True,
+        enable_llm_cache=False,
         best_model_func=deepseepk_model_if_cache,
         cheap_model_func=deepseepk_model_if_cache,
+        embedding_func=local_st_embeddings,
+        enable_naive_rag=True         
     )
     start = time()
     rag.insert(FAKE_TEXT)
@@ -94,5 +114,5 @@ def insert():
 
 
 if __name__ == "__main__":
-    insert()
-    # query()
+    #insert()
+    query()
