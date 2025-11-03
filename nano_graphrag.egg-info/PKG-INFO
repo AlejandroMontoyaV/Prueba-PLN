@@ -1,3 +1,37 @@
+Metadata-Version: 2.4
+Name: nano-graphrag
+Version: 0.0.8.2
+Summary: A simple, easy-to-hack GraphRAG implementation
+Home-page: https://github.com/gusye1234/nano-graphrag
+Author: JianbaiYe
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: future>=1.0.0
+Requires-Dist: openai
+Requires-Dist: tiktoken
+Requires-Dist: networkx
+Requires-Dist: graspologic
+Requires-Dist: nano-vectordb
+Requires-Dist: hnswlib
+Requires-Dist: xxhash
+Requires-Dist: tenacity
+Requires-Dist: dspy-ai
+Requires-Dist: neo4j
+Requires-Dist: aioboto3
+Dynamic: author
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: license-file
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
 Original repo: https://github.com/gusye1234/nano-graphrag
 
 
@@ -59,12 +93,7 @@ Original repo: https://github.com/gusye1234/nano-graphrag
 ```shell
 # clone this repo first
 cd nano-graphrag
-conda create -n graphrag python=3.11 -y
-conda activate graphrag
 pip install -e .
-pip install openai httpx sentence-transformers tiktoken matplotlib networkx
-pip install numpy torch
-
 ```
 
 **Install from PyPi**

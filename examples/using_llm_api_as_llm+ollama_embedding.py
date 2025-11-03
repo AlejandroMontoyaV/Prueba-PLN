@@ -12,9 +12,9 @@ logging.basicConfig(level=logging.WARNING)
 logging.getLogger("nano-graphrag").setLevel(logging.INFO)
 
 # Assumed llm model settings
-LLM_BASE_URL = "https://your.api.url"
-LLM_API_KEY = "your_api_key"
-MODEL = "your_model_name"
+LLM_BASE_URL = "http://localhost:11434/v1"
+LLM_API_KEY = "ollama"
+MODEL = "llama3.1"
 
 # Assumed embedding model settings
 EMBEDDING_MODEL = "nomic-embed-text"
