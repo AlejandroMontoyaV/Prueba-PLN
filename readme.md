@@ -1,3 +1,7 @@
+Original repo: https://github.com/gusye1234/nano-graphrag
+
+
+
 <div align="center">
   <a href="https://github.com/gusye1234/nano-graphrag">
     <picture>
