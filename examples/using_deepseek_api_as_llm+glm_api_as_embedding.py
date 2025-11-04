@@ -125,7 +125,9 @@ def insert():
         embedding_func=GLM_embedding,
     )
     start = time()
-    rag.insert(FAKE_TEXT)
+
+  
+    # rag.insert(FAKE_TEXT)
     print("indexing time:", time() - start)
     # rag = GraphRAG(working_dir=WORKING_DIR, enable_llm_cache=True)
     # rag.insert(FAKE_TEXT[half_len:])

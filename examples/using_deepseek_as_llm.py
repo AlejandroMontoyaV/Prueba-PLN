@@ -107,7 +107,15 @@ def insert():
         enable_naive_rag=True         
     )
     start = time()
-    rag.insert(FAKE_TEXT)
+
+    texts = []
+    for file in ["endgame.txt", "interstellar.txt"]:
+        with open(f"./tests/{file}", encoding="utf-8-sig") as f:
+            texts.append(f.read())
+
+    rag.insert(texts)
+
+    # rag.insert(FAKE_TEXT)
     print("indexing time:", time() - start)
     # rag = GraphRAG(working_dir=WORKING_DIR, enable_llm_cache=True)
     # rag.insert(FAKE_TEXT[half_len:])

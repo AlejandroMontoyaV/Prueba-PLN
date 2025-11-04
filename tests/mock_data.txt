@@ -2582,7 +2582,7 @@ to-night.'
 
 'To-night!' cried Scrooge.
 
-'To-night at midnight. Hark! The time is drawing near.'
+'To-night at midnight. Hark! The time isx  drawing near.'
 
 The chimes were ringing the three-quarters past eleven at that moment.
 
